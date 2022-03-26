@@ -2,6 +2,7 @@
 
 
 #include "BaseGeometryActor.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 // Creation of custom log category
 DEFINE_LOG_CATEGORY_STATIC(LogBaseGeometry, Display, All)
@@ -22,10 +23,12 @@ void ABaseGeometryActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	LogCharacterictics();
-	CustomLogCharacterictics();
+	//LogCharacterictics();
+	//CustomLogCharacterictics();
 
 	InitialRotation = GetActorRotation();
+
+	SetColor(GeometryData.Color);
 }
 
 // Called every frame
@@ -34,6 +37,15 @@ void ABaseGeometryActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	HandleMovement();
+}
+
+void ABaseGeometryActor::SetColor(const FLinearColor& Color)
+{
+	UMaterialInstanceDynamic* DynMaterial = BaseMesh->CreateAndSetMaterialInstanceDynamic(0);
+	if (DynMaterial != nullptr)
+	{
+		DynMaterial->SetVectorParameterValue("Color", Color);
+	}
 }
 
 void ABaseGeometryActor::LogCharacterictics() const

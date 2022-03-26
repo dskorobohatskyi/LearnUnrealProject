@@ -26,6 +26,9 @@ struct FGeometryData
 	float Frequency = 0.5f;
     UPROPERTY(EditAnywhere, Category = "Movement")
 	EMovementType MoveType = EMovementType::Static;
+
+	UPROPERTY(EditAnywhere, Category = "Design")
+	FLinearColor Color;
 };
 
 
@@ -45,6 +48,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void SetColor(const FLinearColor& color);
 
 private:
 	void LogCharacterictics() const;
