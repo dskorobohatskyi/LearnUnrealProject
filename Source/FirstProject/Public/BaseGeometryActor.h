@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/StaticMeshComponent.h"
+
 #include "BaseGeometryActor.generated.h"
 
 UCLASS()
@@ -27,12 +29,20 @@ private:
 	void LogCharacterictics() const;
 	void CustomLogCharacterictics() const;
 
+	void MakeSomeTransformations();
+
+public:
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* BaseMesh;
+
+	UPROPERTY(EditAnywhere)
+	float Amplitude = 50.f;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Weapon")
-	int WeaponsNum = 1;
+	int32 WeaponsNum = 1;
 	UPROPERTY(EditDefaultsOnly, Category = "Stat")
-	int KillsNum = 32;
+	int32 KillsNum = 32;
 	UPROPERTY(EditInstanceOnly, Category = "Health")
 	float Health = 100.f;
 
@@ -40,5 +50,7 @@ protected:
 	bool IsDead = false;
 	UPROPERTY(VisibleAnywhere, Category = "Weapon")
 	bool HasWeapon = true;
+
+	FRotator InitialRotation;
 
 };

@@ -13,6 +13,8 @@ ABaseGeometryActor::ABaseGeometryActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>("BaseMesh");
+	SetRootComponent(BaseMesh);
 }
 
 // Called when the game starts or when spawned
@@ -22,6 +24,8 @@ void ABaseGeometryActor::BeginPlay()
 
 	LogCharacterictics();
 	CustomLogCharacterictics();
+
+	InitialRotation = GetActorRotation();
 }
 
 // Called every frame
@@ -29,6 +33,7 @@ void ABaseGeometryActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	MakeSomeTransformations();
 }
 
 void ABaseGeometryActor::LogCharacterictics() const
@@ -53,5 +58,14 @@ void ABaseGeometryActor::CustomLogCharacterictics() const
 
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, Stat);
+}
+
+void ABaseGeometryActor::MakeSomeTransformations()
+{
+    FRotator CurrentRotation = GetActorRotation();
+    float secondsFromStart = GetWorld()->GetTimeSeconds();
+
+    CurrentRotation.Yaw = InitialRotation.Yaw + Amplitude * FMath::Sin(secondsFromStart);
+    SetActorRotation(CurrentRotation);
 }
 
