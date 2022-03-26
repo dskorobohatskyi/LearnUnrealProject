@@ -8,6 +8,14 @@
 
 #include "BaseGeometryActor.generated.h"
 
+UENUM(BlueprintType)
+enum class EMovementType : uint8
+{
+	Static,
+	Sin
+};
+
+
 UCLASS()
 class FIRSTPROJECT_API ABaseGeometryActor : public AActor
 {
@@ -35,8 +43,10 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Movement")
 	float Amplitude = 50.f;
+	UPROPERTY(EditAnywhere, Category = "Movement")
+	EMovementType MoveType = EMovementType::Static;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Weapon")

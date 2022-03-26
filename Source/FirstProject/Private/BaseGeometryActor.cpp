@@ -33,7 +33,16 @@ void ABaseGeometryActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	MakeSomeTransformations();
+	switch (MoveType)
+	{
+	case EMovementType::Static:
+		break;
+	case EMovementType::Sin:
+		MakeSomeTransformations();
+		break;
+	default:
+		break;
+	}
 }
 
 void ABaseGeometryActor::LogCharacterictics() const

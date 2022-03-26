@@ -13,6 +13,8 @@ ABaseGeometryActor::ABaseGeometryActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>("BaseMesh");
+	SetRootComponent(BaseMesh);
 }
 
 // Called when the game starts or when spawned
@@ -22,6 +24,8 @@ void ABaseGeometryActor::BeginPlay()
 
 	LogCharacterictics();
 	CustomLogCharacterictics();
+
+	InitialRotation = GetActorRotation();
 }
 
 // Called every frame
@@ -29,6 +33,7 @@ void ABaseGeometryActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	MakeSomeTransformations();
 }
 
 void ABaseGeometryActor::LogCharacterictics() const
@@ -45,10 +50,22 @@ void ABaseGeometryActor::CustomLogCharacterictics() const
     UE_LOG(LogBaseGeometry, Display, TEXT("Just a test"));
     UE_LOG(LogBaseGeometry, Error, TEXT("Just a error test"));
 
-	FString Name = "Dima";
-	UE_LOG(LogBaseGeometry, Display, TEXT("Name is %s"), *Name);
+	UE_LOG(LogBaseGeometry, Display, TEXT("My Name is %s"), *GetName());
 
+	FString Name = "Dima";
 	FString Stat = FString::Printf(TEXT("The name - %s; Health - %.2f"), *Name, Health);
 	UE_LOG(LogBaseGeometry, Warning, TEXT(" == %s =="), *Stat);
+
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, Stat);
+}
+
+void ABaseGeometryActor::MakeSomeTransformations()
+{
+    FRotator CurrentRotation = GetActorRotation();
+    float secondsFromStart = GetWorld()->GetTimeSeconds();
+
+    CurrentRotation.Yaw = InitialRotation.Yaw + Amplitude * FMath::Sin(secondsFromStart);
+    SetActorRotation(CurrentRotation);
 }
 
