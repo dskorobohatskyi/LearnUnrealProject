@@ -33,16 +33,7 @@ void ABaseGeometryActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	switch (MoveType)
-	{
-	case EMovementType::Static:
-		break;
-	case EMovementType::Sin:
-		MakeSomeTransformations();
-		break;
-	default:
-		break;
-	}
+	HandleMovement();
 }
 
 void ABaseGeometryActor::LogCharacterictics() const
@@ -74,7 +65,21 @@ void ABaseGeometryActor::MakeSomeTransformations()
     FRotator CurrentRotation = GetActorRotation();
     float secondsFromStart = GetWorld()->GetTimeSeconds();
 
-    CurrentRotation.Yaw = InitialRotation.Yaw + Amplitude * FMath::Sin(secondsFromStart);
+    CurrentRotation.Yaw = InitialRotation.Yaw + GeometryData.Amplitude * FMath::Sin(GeometryData.Frequency * secondsFromStart);
     SetActorRotation(CurrentRotation);
+}
+
+void ABaseGeometryActor::HandleMovement()
+{
+    switch (GeometryData.MoveType)
+    {
+    case EMovementType::Static:
+        break;
+    case EMovementType::Sin:
+        MakeSomeTransformations();
+        break;
+    default:
+        break;
+    }
 }
 

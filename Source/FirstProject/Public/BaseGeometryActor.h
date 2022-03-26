@@ -15,6 +15,19 @@ enum class EMovementType : uint8
 	Sin
 };
 
+USTRUCT(BlueprintType)
+struct FGeometryData
+{
+    GENERATED_USTRUCT_BODY()
+
+    UPROPERTY(EditAnywhere, Category = "Movement")
+    float Amplitude = 50.f;
+    UPROPERTY(EditAnywhere, Category = "Movement")
+	float Frequency = 0.5f;
+    UPROPERTY(EditAnywhere, Category = "Movement")
+	EMovementType MoveType = EMovementType::Static;
+};
+
 
 UCLASS()
 class FIRSTPROJECT_API ABaseGeometryActor : public AActor
@@ -39,14 +52,14 @@ private:
 
 	void MakeSomeTransformations();
 
+	void HandleMovement();
+
 public:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
 
-	UPROPERTY(EditAnywhere, Category = "Movement")
-	float Amplitude = 50.f;
-	UPROPERTY(EditAnywhere, Category = "Movement")
-	EMovementType MoveType = EMovementType::Static;
+	UPROPERTY(EditAnywhere, Category = "Geometry Data")
+	FGeometryData GeometryData;
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Weapon")
