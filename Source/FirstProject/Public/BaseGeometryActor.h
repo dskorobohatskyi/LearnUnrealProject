@@ -28,7 +28,10 @@ struct FGeometryData
 	EMovementType MoveType = EMovementType::Static;
 
 	UPROPERTY(EditAnywhere, Category = "Design")
-	FLinearColor Color;
+	FLinearColor Color = FLinearColor::Black;
+
+    UPROPERTY(EditAnywhere, Category = "Design")
+	float ChangeColorTimeRate = 3.0f;
 };
 
 
@@ -59,6 +62,8 @@ private:
 
 	void HandleMovement();
 
+	void OnChangeColorTimerFired();
+
 public:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
@@ -81,4 +86,9 @@ protected:
 
 	FRotator InitialRotation;
 
+	FTimerHandle ChangeColorTimer;
+	UPROPERTY(VisibleAnywhere, Category = "Color")
+	int32 MaxChangesCount = 5;
+
+	int32 CurrentChangesCount = 0;
 };

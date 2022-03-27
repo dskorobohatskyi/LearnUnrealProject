@@ -3,6 +3,7 @@
 
 #include "BaseGeometryActor.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "TimerManager.h"
 
 // Creation of custom log category
 DEFINE_LOG_CATEGORY_STATIC(LogBaseGeometry, Display, All)
@@ -29,6 +30,8 @@ void ABaseGeometryActor::BeginPlay()
 	InitialRotation = GetActorRotation();
 
 	SetColor(GeometryData.Color);
+
+	GetWorldTimerManager().SetTimer(ChangeColorTimer, this, &ABaseGeometryActor::OnChangeColorTimerFired, GeometryData.ChangeColorTimeRate, true);
 }
 
 // Called every frame
@@ -93,5 +96,19 @@ void ABaseGeometryActor::HandleMovement()
     default:
         break;
     }
+}
+
+void ABaseGeometryActor::OnChangeColorTimerFired()
+{
+	++CurrentChangesCount;
+	if (CurrentChangesCount <= MaxChangesCount)
+	{
+		const FLinearColor NewColor = FLinearColor::MakeRandomColor();
+		SetColor(NewColor);
+	}
+	else
+	{
+		GetWorldTimerManager().ClearTimer(ChangeColorTimer);
+	}
 }
 
